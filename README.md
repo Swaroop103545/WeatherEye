@@ -8,6 +8,7 @@ WeatherApp is a React Native application that provides real-time weather informa
 - 📡 **Real-Time Data**: Displays current temperature, weather conditions, wind speed, and precipitation.
 - 🌙 **Dark Mode**: Toggle between light and dark themes.
 - 🧠 **Redux State Management**: Uses Redux for global state management with persistence.
+- 🏙️ **City Suggestions**: Smart suggestions while typing a city name.
 
 ## Project Structure
 
@@ -74,6 +75,19 @@ Run the app on your desired platform:
 - 🌐 **Axios**: HTTP client for API requests
 - 🚀 **Expo**: Development environment for React Native
 
+## Architectural Decisions
+
+The WeatherApp is structured following Clean Architecture principles to ensure scalability, maintainability, and separation of concerns.
+
+- **Separation of Concerns**: Code is organized into distinct layers such as `api`, `hooks`, `redux`, and `screens`, each with a clear responsibility.
+- **Reusable Components**: UI elements are modularized into the `components` directory for reuse across different screens.
+- **State Management**: Redux Toolkit is used for managing global state efficiently with persistence and separation of state logic into slices.
+- **Custom Hooks**: Encapsulated logic for data fetching and side effects resides in the `hooks` directory to keep components clean.
+- **Service Layer**: All API interactions are handled through the `api` layer using Axios, which abstracts the networking logic away from UI components.
+- **Configuration Centralization**: API keys and base URLs are stored in a centralized `config` file to simplify environment management.
+
+This architecture facilitates ease of testing, debugging, and onboarding for new developers.
+
 ## Contributing
 
 Contributions are welcome! Please follow these steps:
@@ -92,10 +106,6 @@ Contributions are welcome! Please follow these steps:
    git push origin feature-name
    ```
 5. Open a pull request.
-
-## License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
 ## Acknowledgments
 
