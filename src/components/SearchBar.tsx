@@ -33,13 +33,14 @@ const SearchBar = forwardRef<SearchBarRef, Props>(({ city, setCity, handleSearch
   }));
 
   return (
-    <View style={styles.container}>
-      <View style={styles.searchContainer}>
+    <View style={styles.container} testID="search-bar-container">
+      <View style={styles.searchContainer} testID="search-input-container">
         <Ionicons 
           name="search" 
           size={20} 
           color={isDarkMode ? colors.seaShellGrey : colors.greyMsg} 
           style={styles.searchIcon}
+          testID="search-icon"
         />
         <TextInput
           ref={inputRef}
@@ -51,12 +52,14 @@ const SearchBar = forwardRef<SearchBarRef, Props>(({ city, setCity, handleSearch
           returnKeyType="search"
           onSubmitEditing={handleSearch}
           autoCapitalize="words"
+          testID="search-input"
         />
         {city.length > 0 && (
           <TouchableOpacity
             style={styles.clearButton}
             onPress={() => setCity('')}
             hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+            testID="clear-button"
           >
             <Ionicons name="close-circle" size={20} color={textColor} />
           </TouchableOpacity>
@@ -71,6 +74,7 @@ const SearchBar = forwardRef<SearchBarRef, Props>(({ city, setCity, handleSearch
         onPress={handleSearch}
         disabled={!city.trim()}
         activeOpacity={0.7}
+        testID="search-button"
       >
         <Ionicons 
           name="search" 

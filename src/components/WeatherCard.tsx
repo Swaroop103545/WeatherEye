@@ -38,64 +38,68 @@ const WeatherCard: React.FC<WeatherCardProps> = ({
   const styles = getStyles(isDarkMode);
 
   return (
-    <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
+    <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false} testID="weather-card-scroll">
       <LinearGradient
         colors={isDarkMode ? ['#1a1a1a', '#2d2d2d'] : ['#ffffff', '#f5f5f5']}
         style={styles.card}
+        testID="weather-card-gradient"
       >
-        <View style={styles.header}>
-          <Text style={styles.city}>{city}</Text>
-          <Text style={styles.description}>{`${time}, ${description}`}</Text>
+        <View style={styles.header} testID="weather-card-header">
+          <Text style={styles.city} testID="weather-card-city">{city}</Text>
+          <Text style={styles.description} testID="weather-card-description">{`${time}, ${description}`}</Text>
         </View>
 
-        <View style={styles.mainWeather}>
-          <View style={styles.tempContainer}>
-            <Text style={styles.temp}>{Math.round(temp)}°</Text>
-            <Text style={styles.tempUnit}>C</Text>
+        <View style={styles.mainWeather} testID="weather-card-main">
+          <View style={styles.tempContainer} testID="weather-card-temp-container">
+            <Text style={styles.temp} testID="weather-card-temp">{Math.round(temp)}°</Text>
+            <Text style={styles.tempUnit} testID="weather-card-temp-unit">C</Text>
           </View>
           <Image
             source={{ uri: getWeatherIconUrl(icon) }}
             style={styles.weatherIcon}
             resizeMode="contain"
+            testID="weather-card-icon"
           />
         </View>
 
-        <View style={styles.weatherInfo}>
-          <View style={styles.infoItem}>
+        <View style={styles.weatherInfo} testID="weather-card-info">
+          <View style={styles.infoItem} testID="weather-card-precipitation">
             <Image source={Images.precipitation} style={styles.subIcon} />
             <View>
-              <Text style={styles.infoValue}>{precipitation}%</Text>
+              <Text style={styles.infoValue} testID="weather-card-precipitation-value">{precipitation}%</Text>
               <Text style={styles.infoLabel}>Precipitation</Text>
             </View>
           </View>
 
-          <View style={styles.infoItem}>
+          <View style={styles.infoItem} testID="weather-card-wind">
             <Image source={Images.wind} style={styles.subIcon} />
             <View>
-              <Text style={styles.infoValue}>{windSpeed} km/h</Text>
+              <Text style={styles.infoValue} testID="weather-card-wind-value">{windSpeed} km/h</Text>
               <Text style={styles.infoLabel}>Wind Speed</Text>
             </View>
           </View>
         </View>
 
         {forecast.length > 0 && (
-          <View style={styles.forecastContainer}>
-            <Text style={styles.forecastTitle}>7-Day Forecast</Text>
+          <View style={styles.forecastContainer} testID="weather-card-forecast">
+            <Text style={styles.forecastTitle} testID="weather-card-forecast-title">7-Day Forecast</Text>
             <ScrollView 
               horizontal 
               showsHorizontalScrollIndicator={false}
               style={styles.forecastScroll}
+              testID="weather-card-forecast-scroll"
             >
               {forecast.map((day, index) => (
-                <View key={index} style={styles.forecastItem}>
-                  <Text style={styles.forecastDate}>{day.date}</Text>
+                <View key={index} style={styles.forecastItem} testID={`weather-card-forecast-item-${index}`}>
+                  <Text style={styles.forecastDate} testID={`weather-card-forecast-date-${index}`}>{day.date}</Text>
                   <Image
                     source={{ uri: getWeatherIconUrl(day.icon) }}
                     style={styles.forecastIcon}
                     resizeMode="contain"
+                    testID={`weather-card-forecast-icon-${index}`}
                   />
-                  <Text style={styles.forecastTemp}>{Math.round(day.temp)}°</Text>
-                  <Text style={styles.forecastDescription} numberOfLines={1}>
+                  <Text style={styles.forecastTemp} testID={`weather-card-forecast-temp-${index}`}>{Math.round(day.temp)}°</Text>
+                  <Text style={styles.forecastDescription} numberOfLines={1} testID={`weather-card-forecast-description-${index}`}>
                     {day.description}
                   </Text>
                 </View>

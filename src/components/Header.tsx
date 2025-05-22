@@ -9,30 +9,34 @@ const Header = () => {
   const styles = getStyles(isDarkMode);
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container} testID="header-container">
       <StatusBar
         barStyle={isDarkMode ? 'light-content' : 'dark-content'}
         backgroundColor={isDarkMode ? colors.black : colors.white}
+        testID="header-status-bar"
       />
-      <View style={styles.header}>
-        <View style={styles.titleContainer}>
+      <View style={styles.header} testID="header-content">
+        <View style={styles.titleContainer} testID="header-title-container">
           <Ionicons
             name="partly-sunny"
             size={28}
             color={isDarkMode ? colors.orange : colors.primary}
             style={styles.logo}
+            testID="header-logo"
           />
-          <Text style={styles.title}>WeatherEye</Text>
+          <Text style={styles.title} testID="header-title">WeatherEye</Text>
         </View>
         <TouchableOpacity 
           style={styles.themeButton}
           onPress={toggleTheme}
           hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+          testID="header-theme-button"
         >
           <Ionicons
             name={isDarkMode ? 'moon' : 'sunny'}
             size={24}
             color={isDarkMode ? colors.orange : colors.primary}
+            testID="header-theme-icon"
           />
         </TouchableOpacity>
       </View>

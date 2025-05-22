@@ -22,24 +22,27 @@ const ErrorModal: React.FC<ErrorModalProps> = ({ visible, message, onClose }) =>
       transparent={true}
       visible={visible}
       onRequestClose={onClose}
+      testID="error-modal"
     >
-      <View style={styles.centeredView}>
-        <View style={styles.modalView}>
-          <View style={styles.iconContainer}>
+      <View style={styles.centeredView} testID="error-modal-overlay">
+        <View style={styles.modalView} testID="error-modal-content">
+          <View style={styles.iconContainer} testID="error-modal-icon-container">
             <Ionicons
               name="alert-circle"
               size={40}
               color={isDarkMode ? colors.orange : colors.primary}
+              testID="error-modal-icon"
             />
           </View>
-          <Text style={styles.modalTitle}>Oops!</Text>
-          <Text style={styles.modalText}>{message}</Text>
+          <Text style={styles.modalTitle} testID="error-modal-title">Oops!</Text>
+          <Text style={styles.modalText} testID="error-modal-message">{message}</Text>
           <TouchableOpacity
             style={styles.button}
             onPress={onClose}
             activeOpacity={0.7}
+            testID="error-modal-button"
           >
-            <Text style={styles.buttonText}>Try Again</Text>
+            <Text style={styles.buttonText} testID="error-modal-button-text">Try Again</Text>
           </TouchableOpacity>
         </View>
       </View>
