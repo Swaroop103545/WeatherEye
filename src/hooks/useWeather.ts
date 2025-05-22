@@ -5,13 +5,19 @@ import { WeatherData } from '../redux/types/weather';
 
 export const useWeather = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { data, loading, error } = useSelector((state: RootState) => state.weather) as {
+  const { data, forecast, loading, error } = useSelector((state: RootState) => state.weather) as {
     data: WeatherData | null;
+    forecast: Array<{
+      date: string;
+      temp: number;
+      icon: string;
+      description: string;
+    }> | null;
     loading: boolean;
     error: string | null;
   };
 
   const fetchWeather = (city: string) => dispatch(getWeather(city));
 
-  return { data, loading, error, fetchWeather };
+  return { data, forecast, loading, error, fetchWeather };
 };

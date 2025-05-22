@@ -1,10 +1,10 @@
-import React, { useEffect, useRef } from 'react';
+import React, { forwardRef, useImperativeHandle } from 'react';
 import {
   View,
   TextInput,
   TouchableOpacity,
-  Animated,
   StyleSheet,
+  Animated,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '../theme/ThemeContext';
@@ -16,76 +16,129 @@ interface Props {
   handleSearch: () => void;
 }
 
-const SearchBar = ({ city, setCity, handleSearch }: Props) => {
+export interface SearchBarRef {
+  focus: () => void;
+}
+
+const SearchBar = forwardRef<SearchBarRef, Props>(({ city, setCity, handleSearch }, ref) => {
   const { isDarkMode } = useTheme();
   const styles = getStyles(isDarkMode);
-  const slideAnim = useRef(new Animated.Value(-100)).current;
-  const darkModeText = isDarkMode ? colors.white : colors.black;
+  const textColor = isDarkMode ? colors.white : colors.black;
+  const inputRef = React.useRef<TextInput>(null);
+
+  useImperativeHandle(ref, () => ({
+    focus: () => {
+      inputRef.current?.focus();
+    }
+  }));
 
   return (
-    <Animated.View style={styles.container}>
-      <View style={styles.inputWrapper}>
+    <View style={styles.container}>
+      <View style={styles.searchContainer}>
+        <Ionicons 
+          name="search" 
+          size={20} 
+          color={isDarkMode ? colors.seaShellGrey : colors.greyMsg} 
+          style={styles.searchIcon}
+        />
         <TextInput
-          placeholder='Enter City Name'
-          placeholderTextColor={darkModeText}
+          ref={inputRef}
+          placeholder="Search for a city..."
+          placeholderTextColor={isDarkMode ? colors.seaShellGrey : colors.greyMsg}
           value={city}
           onChangeText={setCity}
           style={styles.input}
+          returnKeyType="search"
+          onSubmitEditing={handleSearch}
+          autoCapitalize="words"
         />
         {city.length > 0 && (
           <TouchableOpacity
-            style={styles.clearIcon}
+            style={styles.clearButton}
             onPress={() => setCity('')}
+            hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
           >
-            <Ionicons name='close-circle' size={20} color={isDarkMode? colors.white : colors.black} />
+            <Ionicons name="close-circle" size={20} color={textColor} />
           </TouchableOpacity>
         )}
       </View>
 
-      <TouchableOpacity style={styles.button} onPress={handleSearch}>
-        <Ionicons name='search' size={24} color={colors.white} />
+      <TouchableOpacity 
+        style={[
+          styles.searchButton,
+          !city.trim() && styles.searchButtonDisabled
+        ]} 
+        onPress={handleSearch}
+        disabled={!city.trim()}
+        activeOpacity={0.7}
+      >
+        <Ionicons 
+          name="search" 
+          size={24} 
+          color={colors.white} 
+        />
       </TouchableOpacity>
-    </Animated.View>
+    </View>
   );
-};
+});
 
 const getStyles = (isDarkMode: boolean) =>
   StyleSheet.create({
     container: {
       flexDirection: 'row',
       alignItems: 'center',
-      gap: 10,
-      borderRadius: 5,
+      gap: 12,
+      paddingHorizontal: 16,
+      paddingVertical: 12,
     },
-    inputWrapper: {
-      flex: 0.9,
+    searchContainer: {
+      flex: 1,
       position: 'relative',
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    searchIcon: {
+      position: 'absolute',
+      left: 16,
+      zIndex: 1,
     },
     input: {
+      height: 52,
       borderWidth: 1,
-      borderColor: colors.primary,
-      padding: 10,
-      borderRadius: 5,
-      paddingRight: 30,
+      borderColor: isDarkMode ? colors.primary : colors.primary,
+      borderRadius: 26,
+      paddingHorizontal: 48,
       color: isDarkMode ? colors.white : colors.black,
+      backgroundColor: isDarkMode ? colors.black : colors.white,
+      fontSize: 16,
+      shadowColor: colors.black,
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.1,
+      shadowRadius: 4,
+      elevation: 2,
     },
-    clearIcon: {
+    clearButton: {
       position: 'absolute',
-      right: 10,
-      top: '50%',
-      transform: [{ translateY: -10 }],
+      right: 16,
+      justifyContent: 'center',
+      alignItems: 'center',
+      padding: 4,
     },
-    button: {
-      flex: 0.1,
-      marginLeft: 10,
+    searchButton: {
+      width: 52,
+      height: 52,
       backgroundColor: isDarkMode ? colors.orange : colors.primary,
-      padding: 10,
-      borderRadius: 5,
+      borderRadius: 26,
       alignItems: 'center',
       justifyContent: 'center',
+      shadowColor: colors.black,
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.2,
+      shadowRadius: 4,
+      elevation: 4,
     },
-    crossIcon: {
-      color: isDarkMode ? colors.white : colors.black,
+    searchButtonDisabled: {
+      opacity: 0.5,
     },
   });
 

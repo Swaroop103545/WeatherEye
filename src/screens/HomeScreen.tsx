@@ -1,37 +1,67 @@
-import React, { useState } from 'react';
-import { View, ActivityIndicator, StyleSheet, Alert } from 'react-native';
-import { Header, SearchBar, WeatherCard } from '../components';
+import React, { useState, useEffect, useRef } from 'react';
+import { View, ActivityIndicator, StyleSheet, Keyboard } from 'react-native';
+import { Header, SearchBar, WeatherCard, ErrorModal } from '../components';
 import { useWeather } from '../hooks/useWeather';
 import { formatWeatherTime } from '../utils/helpers';
 import { useTheme } from '../theme/ThemeContext';
 import { colors } from '../theme/colors';
+import type { SearchBarRef } from '../components/SearchBar';
 
 const HomeScreen = () => {
   const [city, setCity] = useState('');
-  const { data, loading, fetchWeather } = useWeather();
+  const [showError, setShowError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const { data, forecast, loading, error, fetchWeather } = useWeather();
   const { isDarkMode } = useTheme();
   const styles = getStyles(isDarkMode);
+  const searchBarRef = useRef<SearchBarRef>(null);
+
+  useEffect(() => {
+    if (error) {
+      console.error('Weather Error:', error);
+      setErrorMessage(error);
+      setShowError(true);
+    }
+  }, [error]);
 
   const handleSearch = async () => {
-    if (city.trim()) {
-      try {
-        await fetchWeather(city);
-      } catch (err) {
-        console.error("Error home:", err);
-        Alert.alert('City not found', 'Please enter a valid city name', [
-          { text: 'OK' },
-        ]);
-      }
+    if (!city.trim()) {
+      setErrorMessage('Please enter a city name');
+      setShowError(true);
+      return;
     }
+
+    try {
+      Keyboard.dismiss();
+      console.log('Searching for city:', city);
+      await fetchWeather(city);
+    } catch (err: any) {
+      console.error('Search Error:', err);
+      setErrorMessage(err.message || 'Failed to fetch weather data');
+      setShowError(true);
+    }
+  };
+
+  const handleTryAgain = () => {
+    searchBarRef.current?.focus();
   };
 
   return (
     <View style={styles.container}>
       <Header />
       <View style={styles.content}>
-        <SearchBar city={city} setCity={setCity} handleSearch={handleSearch} />
-        {loading && <ActivityIndicator />}
-        {data && (
+        <SearchBar 
+          ref={searchBarRef}
+          city={city} 
+          setCity={setCity} 
+          handleSearch={handleSearch} 
+        />
+        {loading && (
+          <View style={styles.loadingContainer}>
+            <ActivityIndicator size="large" color={isDarkMode ? colors.orange : colors.primary} />
+          </View>
+        )}
+        {!loading && data && (
           <WeatherCard
             city={data.name}
             time={formatWeatherTime(data.dt)}
@@ -40,8 +70,15 @@ const HomeScreen = () => {
             icon={data.weather[0].icon}
             precipitation={data.clouds.all}
             windSpeed={data.wind.speed}
+            forecast={forecast || []}
           />
         )}
+        <ErrorModal
+          visible={showError}
+          message={errorMessage}
+          onClose={() => setShowError(false)}
+          onTryAgain={handleTryAgain}
+        />
       </View>
     </View>
   );
@@ -55,10 +92,12 @@ const getStyles = (isDarkMode: boolean) =>
     },
     content: {
       flex: 1,
-      paddingHorizontal: 20,
-      marginTop: 20,
-      gap: 20,
-      backgroundColor: isDarkMode ? colors.black : colors.white,
+      padding: 16,
+    },
+    loadingContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
     },
   });
 
