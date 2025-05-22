@@ -1,9 +1,8 @@
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import {
   View,
   TextInput,
   TouchableOpacity,
-  Animated,
   StyleSheet,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
@@ -19,33 +18,36 @@ interface Props {
 const SearchBar = ({ city, setCity, handleSearch }: Props) => {
   const { isDarkMode } = useTheme();
   const styles = getStyles(isDarkMode);
-  const slideAnim = useRef(new Animated.Value(-100)).current;
-  const darkModeText = isDarkMode ? colors.white : colors.black;
+  const textColor = isDarkMode ? colors.white : colors.black;
 
   return (
-    <Animated.View style={styles.container}>
-      <View style={styles.inputWrapper}>
+    <View style={styles.container}>
+      <View style={styles.searchContainer}>
         <TextInput
           placeholder='Enter City Name'
-          placeholderTextColor={darkModeText}
+          placeholderTextColor={textColor}
           value={city}
           onChangeText={setCity}
           style={styles.input}
         />
         {city.length > 0 && (
           <TouchableOpacity
-            style={styles.clearIcon}
+            style={styles.clearButton}
             onPress={() => setCity('')}
           >
-            <Ionicons name='close-circle' size={20} color={isDarkMode? colors.white : colors.black} />
+            <Ionicons name='close-circle' size={20} color={textColor} />
           </TouchableOpacity>
         )}
       </View>
 
-      <TouchableOpacity style={styles.button} onPress={handleSearch}>
+      <TouchableOpacity 
+        style={styles.searchButton} 
+        onPress={handleSearch}
+        activeOpacity={0.7}
+      >
         <Ionicons name='search' size={24} color={colors.white} />
       </TouchableOpacity>
-    </Animated.View>
+    </View>
   );
 };
 
@@ -54,38 +56,46 @@ const getStyles = (isDarkMode: boolean) =>
     container: {
       flexDirection: 'row',
       alignItems: 'center',
-      gap: 10,
-      borderRadius: 5,
+      gap: 8,
+      paddingHorizontal: 16,
+      paddingVertical: 8,
     },
-    inputWrapper: {
-      flex: 0.9,
+    searchContainer: {
+      flex: 1,
       position: 'relative',
     },
     input: {
+      height: 48,
       borderWidth: 1,
-      borderColor: colors.primary,
-      padding: 10,
-      borderRadius: 5,
-      paddingRight: 30,
+      borderColor: isDarkMode ? colors.primary : colors.primary,
+      borderRadius: 24,
+      paddingHorizontal: 16,
+      paddingRight: 40,
       color: isDarkMode ? colors.white : colors.black,
+      backgroundColor: isDarkMode ? colors.black : colors.white,
+      fontSize: 16,
     },
-    clearIcon: {
+    clearButton: {
       position: 'absolute',
-      right: 10,
-      top: '50%',
-      transform: [{ translateY: -10 }],
+      right: 12,
+      top: 0,
+      bottom: 0,
+      justifyContent: 'center',
+      alignItems: 'center',
+      padding: 4,
     },
-    button: {
-      flex: 0.1,
-      marginLeft: 10,
+    searchButton: {
+      width: 48,
+      height: 48,
       backgroundColor: isDarkMode ? colors.orange : colors.primary,
-      padding: 10,
-      borderRadius: 5,
+      borderRadius: 24,
       alignItems: 'center',
       justifyContent: 'center',
-    },
-    crossIcon: {
-      color: isDarkMode ? colors.white : colors.black,
+      elevation: 2,
+      shadowColor: colors.black,
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.25,
+      shadowRadius: 3.84,
     },
   });
 

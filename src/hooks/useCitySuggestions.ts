@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { OPEN_WEATHER_BASE_URL, OPEN_WEATHER_API_KEY } from '../config/appConfig';
+import { BASE_URL, API_KEY } from '../config/appConfig';
 
 export const useCitySuggestions = (query: string) => {
   const [suggestions, setSuggestions] = useState<string[]>([]);
@@ -11,10 +11,10 @@ export const useCitySuggestions = (query: string) => {
     if (query.length > 2) {
       setLoading(true);
       axios
-        .get(`${OPEN_WEATHER_BASE_URL}/find`, {
+        .get(`${BASE_URL}/find`, {
           params: {
             q: query,
-            appid: OPEN_WEATHER_API_KEY,
+            appid: API_KEY,
             units: 'metric',
             type: 'like',
             sort: 'population',

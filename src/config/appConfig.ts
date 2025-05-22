@@ -1,2 +1,12 @@
-export const OPEN_WEATHER_API_KEY = 'a10cf5e02e3a92cd99c0d014bba02b3c';
-export const OPEN_WEATHER_BASE_URL = 'https://api.openweathermap.org/data/2.5/';
+import { OPEN_WEATHER_API_KEY, OPEN_WEATHER_BASE_URL } from '@env';
+
+if (!OPEN_WEATHER_API_KEY) {
+  throw new Error('OPEN_WEATHER_API_KEY is not defined in environment variables');
+}
+
+if (!OPEN_WEATHER_BASE_URL) {
+  throw new Error('OPEN_WEATHER_BASE_URL is not defined in environment variables');
+}
+
+export const API_KEY = OPEN_WEATHER_API_KEY;
+export const BASE_URL = OPEN_WEATHER_BASE_URL;
