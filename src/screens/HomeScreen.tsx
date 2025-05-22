@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { View, ActivityIndicator, StyleSheet } from 'react-native';
+import React, { useState, useEffect, useRef } from 'react';
+import { View, ActivityIndicator, StyleSheet, Keyboard } from 'react-native';
 import { Header, SearchBar, WeatherCard, ErrorModal } from '../components';
 import { useWeather } from '../hooks/useWeather';
 import { formatWeatherTime } from '../utils/helpers';
 import { useTheme } from '../theme/ThemeContext';
 import { colors } from '../theme/colors';
+import type { SearchBarRef } from '../components/SearchBar';
 
 const HomeScreen = () => {
   const [city, setCity] = useState('');
@@ -13,6 +14,7 @@ const HomeScreen = () => {
   const { data, forecast, loading, error, fetchWeather } = useWeather();
   const { isDarkMode } = useTheme();
   const styles = getStyles(isDarkMode);
+  const searchBarRef = useRef<SearchBarRef>(null);
 
   useEffect(() => {
     if (error) {
@@ -30,6 +32,7 @@ const HomeScreen = () => {
     }
 
     try {
+      Keyboard.dismiss();
       console.log('Searching for city:', city);
       await fetchWeather(city);
     } catch (err: any) {
@@ -39,11 +42,20 @@ const HomeScreen = () => {
     }
   };
 
+  const handleTryAgain = () => {
+    searchBarRef.current?.focus();
+  };
+
   return (
     <View style={styles.container}>
       <Header />
       <View style={styles.content}>
-        <SearchBar city={city} setCity={setCity} handleSearch={handleSearch} />
+        <SearchBar 
+          ref={searchBarRef}
+          city={city} 
+          setCity={setCity} 
+          handleSearch={handleSearch} 
+        />
         {loading && (
           <View style={styles.loadingContainer}>
             <ActivityIndicator size="large" color={isDarkMode ? colors.orange : colors.primary} />
@@ -65,6 +77,7 @@ const HomeScreen = () => {
           visible={showError}
           message={errorMessage}
           onClose={() => setShowError(false)}
+          onTryAgain={handleTryAgain}
         />
       </View>
     </View>

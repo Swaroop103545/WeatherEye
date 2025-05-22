@@ -1,5 +1,8 @@
-import React, { useState } from 'react';
-import { Modal, View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import React from 'react';
+import { Modal, View, Text, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import { useTheme } from '../theme/ThemeContext';
+import { colors } from '../theme/colors';
 
 interface ErrorModalProps {
   visible: boolean;
@@ -7,7 +10,12 @@ interface ErrorModalProps {
   onClose: () => void;
 }
 
+const { width } = Dimensions.get('window');
+
 const ErrorModal: React.FC<ErrorModalProps> = ({ visible, message, onClose }) => {
+  const { isDarkMode } = useTheme();
+  const styles = getStyles(isDarkMode);
+
   return (
     <Modal
       animationType="fade"
@@ -17,10 +25,19 @@ const ErrorModal: React.FC<ErrorModalProps> = ({ visible, message, onClose }) =>
     >
       <View style={styles.centeredView}>
         <View style={styles.modalView}>
+          <View style={styles.iconContainer}>
+            <Ionicons
+              name="alert-circle"
+              size={40}
+              color={isDarkMode ? colors.orange : colors.primary}
+            />
+          </View>
+          <Text style={styles.modalTitle}>Oops!</Text>
           <Text style={styles.modalText}>{message}</Text>
           <TouchableOpacity
             style={styles.button}
             onPress={onClose}
+            activeOpacity={0.7}
           >
             <Text style={styles.buttonText}>Try Again</Text>
           </TouchableOpacity>
@@ -30,45 +47,73 @@ const ErrorModal: React.FC<ErrorModalProps> = ({ visible, message, onClose }) =>
   );
 };
 
-const styles = StyleSheet.create({
-  centeredView: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-  },
-  modalView: {
-    margin: 20,
-    backgroundColor: 'white',
-    borderRadius: 20,
-    padding: 35,
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
+const getStyles = (isDarkMode: boolean) =>
+  StyleSheet.create({
+    centeredView: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: 'rgba(0, 0, 0, 0.5)',
     },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-  },
-  modalText: {
-    marginBottom: 15,
-    textAlign: 'center',
-    fontSize: 16,
-  },
-  button: {
-    backgroundColor: '#2196F3',
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2,
-    minWidth: 100,
-  },
-  buttonText: {
-    color: 'white',
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-});
+    modalView: {
+      width: width * 0.85,
+      backgroundColor: isDarkMode ? colors.black : colors.white,
+      borderRadius: 20,
+      padding: 24,
+      alignItems: 'center',
+      shadowColor: colors.black,
+      shadowOffset: {
+        width: 0,
+        height: 2,
+      },
+      shadowOpacity: 0.25,
+      shadowRadius: 4,
+      elevation: 5,
+      borderWidth: 1,
+      borderColor: isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)',
+    },
+    iconContainer: {
+      width: 80,
+      height: 80,
+      borderRadius: 40,
+      backgroundColor: isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)',
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginBottom: 16,
+    },
+    modalTitle: {
+      fontSize: 24,
+      fontWeight: '700',
+      color: isDarkMode ? colors.white : colors.black,
+      marginBottom: 12,
+    },
+    modalText: {
+      fontSize: 16,
+      color: isDarkMode ? colors.seaShellGrey : colors.greyMsg,
+      textAlign: 'center',
+      marginBottom: 24,
+      lineHeight: 22,
+    },
+    button: {
+      backgroundColor: isDarkMode ? colors.orange : colors.primary,
+      borderRadius: 25,
+      paddingVertical: 12,
+      paddingHorizontal: 32,
+      elevation: 2,
+      shadowColor: colors.black,
+      shadowOffset: {
+        width: 0,
+        height: 2,
+      },
+      shadowOpacity: 0.25,
+      shadowRadius: 3.84,
+    },
+    buttonText: {
+      color: colors.white,
+      fontSize: 16,
+      fontWeight: '600',
+      textAlign: 'center',
+    },
+  });
 
 export default ErrorModal; 
