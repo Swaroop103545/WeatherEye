@@ -4,10 +4,6 @@ import NetInfo from '@react-native-community/netinfo';
 
 export const fetchWeatherByCity = async (city: string) => {
   try {
-    console.log('Fetching weather for:', city);
-    console.log('API Key:', API_KEY);
-    console.log('Base URL:', BASE_URL);
-
     if (!API_KEY) {
       throw new Error('API Key is missing');
     }
@@ -18,8 +14,6 @@ export const fetchWeatherByCity = async (city: string) => {
     }
 
     const url = `${BASE_URL}/weather`;
-    console.log('Weather API URL:', url);
-
     const res = await axios.get(url, {
       params: {
         q: city,
@@ -32,8 +26,6 @@ export const fetchWeatherByCity = async (city: string) => {
     if (!res.data) {
       throw new Error('No data received from weather API');
     }
-
-    console.log('Weather response:', res.data);
     return res.data;
   } catch (error: any) {
     console.error('Weather API Error:', {
@@ -60,9 +52,7 @@ export const fetchWeatherByCity = async (city: string) => {
 };
 
 export const fetchForecastByCity = async (city: string) => {
-  try {
-    console.log('Fetching forecast for:', city);
-    
+  try {    
     if (!API_KEY) {
       throw new Error('API Key is missing');
     }
@@ -73,7 +63,6 @@ export const fetchForecastByCity = async (city: string) => {
     }
 
     const url = `${BASE_URL}/forecast`;
-    console.log('Forecast API URL:', url);
 
     const res = await axios.get(url, {
       params: {
@@ -87,8 +76,6 @@ export const fetchForecastByCity = async (city: string) => {
     if (!res.data) {
       throw new Error('No data received from forecast API');
     }
-
-    console.log('Forecast response:', res.data);
 
     // Group forecast data by day
     const dailyForecasts = res.data.list.reduce((acc: any, item: any) => {
@@ -107,7 +94,6 @@ export const fetchForecastByCity = async (city: string) => {
     }, {});
 
     const result = Object.values(dailyForecasts).slice(0, 7);
-    console.log('Processed forecast data:', result);
     return result;
   } catch (error: any) {
     console.error('Forecast API Error:', {

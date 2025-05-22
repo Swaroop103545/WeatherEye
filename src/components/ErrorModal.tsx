@@ -8,11 +8,12 @@ interface ErrorModalProps {
   visible: boolean;
   message: string;
   onClose: () => void;
+  onTryAgain: () => void;
 }
 
 const { width } = Dimensions.get('window');
 
-const ErrorModal: React.FC<ErrorModalProps> = ({ visible, message, onClose }) => {
+const ErrorModal: React.FC<ErrorModalProps> = ({ visible, message, onClose, onTryAgain }) => {
   const { isDarkMode } = useTheme();
   const styles = getStyles(isDarkMode);
 
@@ -38,7 +39,7 @@ const ErrorModal: React.FC<ErrorModalProps> = ({ visible, message, onClose }) =>
           <Text style={styles.modalText} testID="error-modal-message">{message}</Text>
           <TouchableOpacity
             style={styles.button}
-            onPress={onClose}
+            onPress={onTryAgain}
             activeOpacity={0.7}
             testID="error-modal-button"
           >
@@ -56,7 +57,7 @@ const getStyles = (isDarkMode: boolean) =>
       flex: 1,
       justifyContent: 'center',
       alignItems: 'center',
-      backgroundColor: 'rgba(0, 0, 0, 0.5)',
+      backgroundColor: colors.gradientBlack,
     },
     modalView: {
       width: width * 0.85,
@@ -73,13 +74,13 @@ const getStyles = (isDarkMode: boolean) =>
       shadowRadius: 4,
       elevation: 5,
       borderWidth: 1,
-      borderColor: isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)',
+      borderColor: isDarkMode ? colors.orange : colors.primary,
     },
     iconContainer: {
       width: 80,
       height: 80,
       borderRadius: 40,
-      backgroundColor: isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)',
+      backgroundColor: isDarkMode ? colors.gradientGray : colors.gradientBlack,
       justifyContent: 'center',
       alignItems: 'center',
       marginBottom: 16,

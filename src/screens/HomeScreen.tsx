@@ -18,7 +18,6 @@ const HomeScreen = () => {
 
   useEffect(() => {
     if (error) {
-      console.error('Weather Error:', error);
       setErrorMessage(error);
       setShowError(true);
     }
@@ -33,7 +32,6 @@ const HomeScreen = () => {
 
     try {
       Keyboard.dismiss();
-      console.log('Searching for city:', city);
       await fetchWeather(city);
     } catch (err: any) {
       console.error('Search Error:', err);
@@ -43,6 +41,7 @@ const HomeScreen = () => {
   };
 
   const handleTryAgain = () => {
+    setShowError(false);
     searchBarRef.current?.focus();
   };
 

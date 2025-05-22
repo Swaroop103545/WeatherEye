@@ -160,7 +160,7 @@ const getStyles = (isDarkMode: boolean) =>
       fontSize: 24,
       fontWeight: '600',
       color: isDarkMode ? colors.white : colors.black,
-      marginTop: 8,
+      marginTop: 16,
     },
     weatherIcon: {
       width: 100,
@@ -169,7 +169,7 @@ const getStyles = (isDarkMode: boolean) =>
     weatherInfo: {
       flexDirection: 'row',
       justifyContent: 'space-around',
-      backgroundColor: isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)',
+      backgroundColor: isDarkMode ? colors.gradientGray : colors.gradientBlack,
       borderRadius: 16,
       padding: 16,
       marginBottom: 24,

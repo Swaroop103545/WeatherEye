@@ -48,6 +48,8 @@ export const colors = {
   secondary: "#FF7200",
   black: "#000000",
   marigoldYellow: "#FEE97D",
+  gradientGray: 'rgba(255,255,255,0.1)',
+  gradientBlack: 'rgba(0,0,0,0.1)',
   discoverYellow: "#FFF200",
   yellow: "#FFC700",
   discoverBlack: "#16161D",

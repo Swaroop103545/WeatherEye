@@ -57,7 +57,7 @@ const getStyles = (isDarkMode: boolean) =>
       paddingHorizontal: 20,
       paddingVertical: 16,
       borderBottomWidth: 1,
-      borderBottomColor: isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)',
+      borderBottomColor: isDarkMode ? colors.gradientGray : colors.gradientBlack,
     },
     titleContainer: {
       flexDirection: 'row',
@@ -75,7 +75,7 @@ const getStyles = (isDarkMode: boolean) =>
       width: 40,
       height: 40,
       borderRadius: 20,
-      backgroundColor: isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)',
+      backgroundColor: isDarkMode ? colors.gradientGray : colors.gradientBlack,
       justifyContent: 'center',
       alignItems: 'center',
     },

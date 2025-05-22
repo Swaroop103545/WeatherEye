@@ -25,12 +25,10 @@ export const getWeather = createAsyncThunk(
   'weather/getWeather',
   async (city: string, { rejectWithValue }) => {
     try {
-      console.log('Starting weather fetch for:', city);
       const [weatherData, forecastData] = await Promise.all([
         fetchWeatherByCity(city),
         fetchForecastByCity(city),
       ]);
-      console.log('Weather fetch completed successfully');
       return { weatherData, forecastData };
     } catch (err: any) {
       console.error('Weather fetch failed:', err);
@@ -53,19 +51,16 @@ const weatherSlice = createSlice({
   extraReducers: builder => {
     builder
       .addCase(getWeather.pending, state => {
-        console.log('Weather fetch pending');
         state.loading = true;
         state.error = null;
       })
       .addCase(getWeather.fulfilled, (state, action: PayloadAction<{ weatherData: WeatherData; forecastData: any[] }>) => {
-        console.log('Weather fetch fulfilled');
         state.data = action.payload.weatherData;
         state.forecast = action.payload.forecastData;
         state.loading = false;
         state.error = null;
       })
       .addCase(getWeather.rejected, (state, action) => {
-        console.log('Weather fetch rejected:', action.payload);
         state.error = action.payload as string;
         state.loading = false;
         state.data = null;
