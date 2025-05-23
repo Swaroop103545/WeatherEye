@@ -11,10 +11,12 @@ jest.mock('../../src/theme/ThemeContext', () => ({
 
 describe('ErrorModal Component', () => {
   const mockOnClose = jest.fn();
+  const mockOnTryAgain = jest.fn();
   const defaultProps = {
     visible: true,
     message: 'Something went wrong',
     onClose: mockOnClose,
+    onTryAgain: mockOnTryAgain,
   };
 
   beforeEach(() => {
@@ -35,12 +37,12 @@ describe('ErrorModal Component', () => {
     expect(getByTestId('error-modal-button-text')).toHaveTextContent('Try Again');
   });
 
-  it('calls onClose when button is pressed', () => {
+  it('calls onTryAgain when button is pressed', () => {
     const { getByTestId } = render(<ErrorModal {...defaultProps} />);
     const button = getByTestId('error-modal-button');
     
     fireEvent.press(button);
-    expect(mockOnClose).toHaveBeenCalledTimes(1);
+    expect(mockOnTryAgain).toHaveBeenCalledTimes(1);
   });
 
   it('calls onClose when modal is requested to close', () => {

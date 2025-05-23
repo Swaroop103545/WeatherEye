@@ -11,7 +11,7 @@ const HomeScreen = () => {
   const [city, setCity] = useState('');
   const [showError, setShowError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-  const { data, forecast, loading, error, fetchWeather } = useWeather();
+  const { data, forecast, loading, error, fetchWeather, lastSuccessfulCity } = useWeather();
   const { isDarkMode } = useTheme();
   const styles = getStyles(isDarkMode);
   const searchBarRef = useRef<SearchBarRef>(null);
@@ -20,8 +20,11 @@ const HomeScreen = () => {
     if (error) {
       setErrorMessage(error);
       setShowError(true);
+      if (lastSuccessfulCity) {
+        fetchWeather(lastSuccessfulCity);
+      }
     }
-  }, [error]);
+  }, [error, lastSuccessfulCity]);
 
   const handleSearch = async () => {
     if (!city.trim()) {

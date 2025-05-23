@@ -11,7 +11,6 @@ jest.mock('../src/redux/store', () => ({
   },
 }));
 
-// Mock the HomeScreen component to return a <Text> element using require inside the factory
 jest.mock('../src/screens', () => {
   const { Text } = require('react-native');
   return {
@@ -19,7 +18,6 @@ jest.mock('../src/screens', () => {
   };
 });
 
-// Mock the SearchBar component to return a button with testID
 jest.mock('../src/components/SearchBar', () => {
   const { View } = require('react-native');
   return ({ city, setCity, handleSearch }: any) => (

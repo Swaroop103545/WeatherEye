@@ -2,20 +2,17 @@ import React from 'react';
 import { render } from '@testing-library/react-native';
 import WeatherCard from '../../src/components/WeatherCard';
 
-// Mock the theme context
 jest.mock('../../src/theme/ThemeContext', () => ({
   useTheme: () => ({
     isDarkMode: false,
   }),
 }));
 
-// Mock the assets
 jest.mock('../../assets', () => ({
   precipitation: 'precipitation-icon',
   wind: 'wind-icon',
 }));
 
-// Mock the helper function
 jest.mock('../../src/utils/helpers', () => ({
   getWeatherIconUrl: (icon: string) => `https://openweathermap.org/img/wn/${icon}@2x.png`,
 }));

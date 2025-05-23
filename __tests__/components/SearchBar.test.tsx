@@ -2,7 +2,6 @@ import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
 import SearchBar from '../../src/components/SearchBar';
 
-// Mock the theme context
 jest.mock('../../src/theme/ThemeContext', () => ({
   useTheme: () => ({
     isDarkMode: false,

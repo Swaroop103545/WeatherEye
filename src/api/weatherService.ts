@@ -20,7 +20,7 @@ export const fetchWeatherByCity = async (city: string) => {
         appid: API_KEY,
         units: 'metric',
       },
-      timeout: 10000, // 10 seconds timeout
+      timeout: 10000,
     });
 
     if (!res.data) {
@@ -70,14 +70,13 @@ export const fetchForecastByCity = async (city: string) => {
         appid: API_KEY,
         units: 'metric',
       },
-      timeout: 10000, // 10 seconds timeout
+      timeout: 10000,
     });
 
     if (!res.data) {
       throw new Error('No data received from forecast API');
     }
 
-    // Group forecast data by day
     const dailyForecasts = res.data.list.reduce((acc: any, item: any) => {
       const date = new Date(item.dt * 1000);
       const dayKey = date.toLocaleDateString('en-US', { weekday: 'short' });

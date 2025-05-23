@@ -1,12 +1,9 @@
-// jest.mock('react-native-gesture-handler/jestSetup');
-
 jest.mock('react-native-reanimated', () => {
   const Reanimated = require('react-native-reanimated/mock');
   Reanimated.default.call = () => {};
   return Reanimated;
 });
 
-// Mock for react-native
 jest.mock('react-native', () => {
   const RN = jest.requireActual('react-native');
   return {
@@ -35,24 +32,20 @@ jest.mock('@react-native-async-storage/async-storage', () =>
   require('@react-native-async-storage/async-storage/jest/async-storage-mock')
 );
 
-// Mock for expo-linear-gradient
 jest.mock('expo-linear-gradient', () => ({
   LinearGradient: 'LinearGradient',
 }));
 
-// Mock for expo-status-bar
 jest.mock('expo-status-bar', () => ({
   StatusBar: 'StatusBar',
 }));
 
-// Mock for @expo/vector-icons
 jest.mock('@expo/vector-icons', () => ({
   Ionicons: 'Ionicons',
   MaterialCommunityIcons: 'MaterialCommunityIcons',
   FontAwesome: 'FontAwesome',
 }));
 
-// Mock for expo-constants
 jest.mock('expo-constants', () => ({
   Constants: {
     manifest: {
@@ -63,9 +56,6 @@ jest.mock('expo-constants', () => ({
     },
   },
 }));
-
-// Mock for react-native StatusBar
-// (Header.test.tsx లో మాత్రమే mock చేయాలి)
 
 jest.mock('react-native/Libraries/Settings/Settings', () => ({
   get: jest.fn(),

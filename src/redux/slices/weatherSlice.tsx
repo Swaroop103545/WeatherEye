@@ -12,6 +12,7 @@ interface WeatherState {
   }> | null;
   loading: boolean;
   error: string | null;
+  lastSuccessfulCity: string | null;
 }
 
 const initialState: WeatherState = {
@@ -19,6 +20,7 @@ const initialState: WeatherState = {
   forecast: null,
   loading: false,
   error: null,
+  lastSuccessfulCity: null,
 };
 
 export const getWeather = createAsyncThunk(
@@ -59,12 +61,15 @@ const weatherSlice = createSlice({
         state.forecast = action.payload.forecastData;
         state.loading = false;
         state.error = null;
+        state.lastSuccessfulCity = action.payload.weatherData.name;
       })
       .addCase(getWeather.rejected, (state, action) => {
         state.error = action.payload as string;
         state.loading = false;
-        state.data = null;
-        state.forecast = null;
+        if (!state.lastSuccessfulCity) {
+          state.data = null;
+          state.forecast = null;
+        }
       });
   },
 });

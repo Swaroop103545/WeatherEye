@@ -1,8 +1,8 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
 import Header from '../../src/components/Header';
+import { View } from 'react-native';
 
-// Mock the theme context
 const mockToggleTheme = jest.fn();
 let mockIsDarkMode = false;
 jest.mock('../../src/theme/ThemeContext', () => ({
@@ -12,10 +12,9 @@ jest.mock('../../src/theme/ThemeContext', () => ({
   }),
 }));
 
-// StatusBar mock (testID, barStyle కోసం)
 jest.mock('react-native/Libraries/Components/StatusBar/StatusBar', () => ({
   __esModule: true,
-  default: (props) => <div {...props} />,
+  default: (props: any) => <View {...props} />,
 }));
 
 describe('Header Component', () => {
